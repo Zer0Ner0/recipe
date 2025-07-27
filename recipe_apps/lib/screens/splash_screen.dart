@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'signin_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
         child: Stack(
           children: [
             Image.asset(
-              'assets/images/splash_bg.png', // Ensure you have this image in your assets
+              'images/splash_bg.png', // Ensure you have this image in your assets
               width: size.width,
               height: size.height,
               fit: BoxFit.cover,
@@ -37,7 +38,7 @@ class SplashScreen extends StatelessWidget {
                         Column(
                           children: [
                             Image.asset(
-                                'assets/images/splash_icon.png', // Ensure you have this image in your assets),
+                                'images/splash_icon.png', // Ensure you have this image in your assets),
                                 width: 79,
                                 height: 79),
                             const SizedBox(height: 16),
@@ -78,7 +79,11 @@ class SplashScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const SignIn(),
+                            ));
+                          },
                           child: const Text(
                             'Start Cooking',
                             style: TextStyle(
