@@ -9,9 +9,13 @@ class NewRecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 251,
-      child: Stack(
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/recipe-detail');
+      },
+      child: SizedBox(
+        width: 251,
+        child: Stack(
         children: [
           // Background card
           Container(
@@ -143,6 +147,7 @@ class NewRecipeCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

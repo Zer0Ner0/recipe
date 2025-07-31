@@ -6,6 +6,7 @@ import 'screens/splash_screen.dart';
 import 'screens/saved_recipes_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/recipe_detail_screen.dart';
 
 void main() {
   runApp(const MyRecipeApp());
@@ -33,6 +34,7 @@ class MyRecipeApp extends StatelessWidget {
         '/profile': (context) => const ProfileScreen(),
         '/signin': (context) => const SignIn(),
         '/signup': (context) => const SignUp(),
+        '/recipe-detail': (context) => const RecipeDetailScreen(),
       },
     );
   }
