@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../constants/colors.dart';
+import '../services/recipe_service.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 import '../widgets/home/recipe_card.dart';
 import '../widgets/home/new_recipe_card.dart';
@@ -14,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedCategoryIndex = 0;
+  List<Recipe> featuredRecipes = [];
+  bool isLoading = true;
 
   final List<String> categories = [
     'All',
@@ -28,29 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
     'Local Dishes',
   ];
 
-  final List<Recipe> featuredRecipes = [
-    Recipe(
-      title: 'Classic Greek Salad',
-      time: '15 Mins',
-      rating: '4.5',
-      image: 'images/salad.jpg',
-    ),
-    Recipe(
-      title: 'Crunchy Nut Coleslaw',
-      time: '10 Mins',
-      rating: '3.5',
-      image: 'images/salad.jpg',
-    ),
-    Recipe(
-      title: 'Shrimp Chicken Andouille Sausage Jambalaya',
-      time: '10 Mins',
-      rating: '3.0',
-      image: 'images/salad.jpg',
-    ),
-  ];
-
   final List<Recipe> newRecipes = [
     Recipe(
+      id: 1001,
       title: 'Steak with tomato sauce and bulgur rice',
       author: 'James Milner',
       time: '20 mins',
@@ -58,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       rating: '4.5',
     ),
     Recipe(
+      id: 1002,
       title: 'Chicken meal with sauce',
       author: 'Issabella Ethan',
       time: '20 mins',
@@ -65,6 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
       rating: '4.0',
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRecipes();
+  }
+
+  Future<void> _loadRecipes() async {
+    try {
+      final recipes = await RecipeService.fetchRecipes();
+      setState(() {
+        featuredRecipes = recipes;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Failed to load recipes: $e');
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIndex: 0,
         onItemTapped: (index) {
           switch (index) {
-            case 0:
-              // Navigator.pushReplacementNamed(context, '/home');
-              break;
             case 1:
               Navigator.pushReplacementNamed(context, '/saved');
               break;
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Text(
         title,
         style: const TextStyle(
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSearchBar() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Container(
         height: 40,
         decoration: BoxDecoration(
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 31,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 10, right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: categories.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (_, index) {
@@ -288,28 +288,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecipeList(BoxConstraints constraints) {
-    final cardHeight =
-        constraints.maxHeight * 0.28; // ~231 on typical 800 height
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return SizedBox(
-      height: cardHeight,
-      child: ListView.separated(
+      height: constraints.maxHeight * 0.3,
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 10, right: 10),
         itemCount: featuredRecipes.length,
-        physics: const BouncingScrollPhysics(),
-        separatorBuilder: (_, __) => const SizedBox(width: 15),
-        itemBuilder: (_, index) => RecipeCard(recipe: featuredRecipes[index]),
+        itemBuilder: (context, index) {
+          return RecipeCard(recipe: featuredRecipes[index]);
+        },
       ),
     );
   }
 
   Widget _buildNewRecipeList(BoxConstraints constraints) {
-    final cardHeight = constraints.maxHeight * 0.18; // ~127 on typical screen
+    final cardHeight = constraints.maxHeight * 0.18;
     return SizedBox(
       height: cardHeight,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 10, right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: newRecipes.length,
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (_, __) => const SizedBox(width: 15),
@@ -317,63 +318,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Widget _buildBottomNavigationBar() {
-  //   final screenHeight = MediaQuery.of(context).size.height;
-  //   final barHeight = screenHeight * 0.12;
-  //   final fabHeight = screenHeight * 0.07;
-
-  //   return SizedBox(
-  //     height: barHeight,
-  //     child: Stack(
-  //       children: [
-  //         Positioned(
-  //           bottom: 0,
-  //           child: Container(
-  //             height: barHeight - 14,
-  //             width: MediaQuery.of(context).size.width,
-  //             decoration: BoxDecoration(
-  //               color: AppColors.white,
-  //               boxShadow: [
-  //                 BoxShadow(
-  //                   color: Colors.grey.withOpacity(0.08),
-  //                   blurRadius: 8,
-  //                   offset: const Offset(0, 0),
-  //                 ),
-  //               ],
-  //             ),
-  //             child: const Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: [
-  //                 Icon(Icons.home, color: AppColors.green),
-  //                 Icon(Icons.bookmark_border, color: AppColors.border),
-  //                 SizedBox(width: 48),
-  //                 Icon(Icons.notifications_outlined, color: AppColors.border),
-  //                 Icon(Icons.person_outline, color: AppColors.border),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         Positioned(
-  //           top: 0,
-  //           left: 0,
-  //           right: 0,
-  //           child: Center(
-  //             child: SizedBox(
-  //               height: fabHeight,
-  //               width: fabHeight,
-  //               child: FloatingActionButton(
-  //                 heroTag: 'fab_home',
-  //                 onPressed: () {},
-  //                 backgroundColor: AppColors.green,
-  //                 shape: const CircleBorder(),
-  //                 child: const Icon(Icons.add, size: 24),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

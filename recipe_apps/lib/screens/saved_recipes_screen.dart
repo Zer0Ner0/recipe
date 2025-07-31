@@ -14,6 +14,7 @@ class SavedRecipesScreen extends StatefulWidget {
 class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
   final List<Recipe> savedRecipes = [
     Recipe(
+      id: 10001,
       title: 'Traditional spare ribs baked',
       time: '20 min',
       rating: '4.0',
@@ -22,6 +23,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       author: 'By Chef John',
     ),
     Recipe(
+      id: 10002,
       title: 'Spice roasted chicken with flavored rice',
       time: '20 min',
       rating: '4.0',
@@ -30,6 +32,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       author: 'By Mark Kelvin',
     ),
     Recipe(
+      id: 10003,
       title: 'Spicy fried rice mix chicken bali',
       time: '20 min',
       rating: '4.0',
@@ -38,6 +41,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       author: 'By Spicy Nelly',
     ),
     Recipe(
+      id: 10004,
       title: 'Lamb chops with fruity couscous and mint',
       time: '20 min',
       rating: '3.0',
