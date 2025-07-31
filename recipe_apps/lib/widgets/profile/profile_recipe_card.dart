@@ -23,7 +23,7 @@ class ProfileRecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double cardWidth = MediaQuery.of(context).size.width - 60;
 
-    return Container(
+    return SizedBox(
       width: cardWidth,
       height: 150,
       child: Stack(

@@ -53,20 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadRecipes();
-  }
-
-  Future<void> _loadRecipes() async {
-    try {
-      final recipes = await RecipeService.fetchRecipes();
+    ApiService.fetchRecipes().then((recipes) {
       setState(() {
-        featuredRecipes = recipes;
-        isLoading = false;
+        featuredRecipes = recipes; // or whatever state var you're using
       });
-    } catch (e) {
-      print('Failed to load recipes: $e');
-      setState(() => isLoading = false);
-    }
+    });
   }
 
   @override
