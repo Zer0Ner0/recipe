@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screens/splash_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/signin_screen.dart';
+import 'screens/signup_screen.dart';
+import 'screens/splash_screen.dart';
+import 'screens/saved_recipes_screen.dart';
 
 void main() {
   runApp(const MyRecipeApp());
@@ -18,7 +22,14 @@ class MyRecipeApp extends StatelessWidget {
         primarySwatch: Colors.green,
         fontFamily: 'Poppins',
       ),
-      home: const SplashScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/saved': (context) => const SavedRecipesScreen(),
+        '/signin': (context) => const SignIn(),
+        '/signup': (context) => const SignUp(),
+      },
     );
   }
 }

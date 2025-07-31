@@ -10,4 +10,14 @@ class AppColors {
   static const Color border = Color(0xFFD9D9D9);
   static const Color star = Color(0xFFFFAD30);
   static const Color badge = Color(0xFFFFE1B3);
+
+  // New colors from saved recipes design
+  static const Color primaryGreen = Color(0xFF129575);
+  static const Color primaryGreen80 = Color(0xFF71B1A1);
+  static const Color primaryGreen40 = Color(0xFFDBEBE7);
+  static const Color secondaryYellow20 = Color(0xFFFFE1B3);
+  static const Color neutralBlack = Color(0xFF000000);
+  static const Color neutralGray4 = Color(0xFFD9D9D9);
+  static const Color neutralGray1 = Color(0xFF484848);
+  static const Color labelColor = Color(0xFF121212);
 }

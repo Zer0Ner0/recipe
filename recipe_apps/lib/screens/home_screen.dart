@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../constants/colors.dart';
+import '../widgets/custom_bottom_nav_bar.dart';
 import '../widgets/recipe_card.dart';
 import '../widgets/new_recipe_card.dart';
 
@@ -97,7 +98,28 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 0,
+        onItemTapped: (index) {
+          switch (index) {
+            case 0:
+              // Navigator.pushReplacementNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/saved');
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(context, '/notifications');
+              break;
+            case 3:
+              Navigator.pushReplacementNamed(context, '/profile');
+              break;
+            case 4:
+              Navigator.pushNamed(context, '/add');
+              break;
+          }
+        },
+      ),
     );
   }
 
@@ -296,62 +318,62 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final barHeight = screenHeight * 0.12;
-    final fabHeight = screenHeight * 0.07;
+  // Widget _buildBottomNavigationBar() {
+  //   final screenHeight = MediaQuery.of(context).size.height;
+  //   final barHeight = screenHeight * 0.12;
+  //   final fabHeight = screenHeight * 0.07;
 
-    return SizedBox(
-      height: barHeight,
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 0,
-            child: Container(
-              height: barHeight - 14,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.08),
-                    blurRadius: 8,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(Icons.home, color: AppColors.green),
-                  Icon(Icons.bookmark_border, color: AppColors.border),
-                  SizedBox(width: 48),
-                  Icon(Icons.notifications_outlined, color: AppColors.border),
-                  Icon(Icons.person_outline, color: AppColors.border),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: SizedBox(
-                height: fabHeight,
-                width: fabHeight,
-                child: FloatingActionButton(
-                  heroTag: 'fab_home',
-                  onPressed: () {},
-                  backgroundColor: AppColors.green,
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons.add, size: 24),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //   return SizedBox(
+  //     height: barHeight,
+  //     child: Stack(
+  //       children: [
+  //         Positioned(
+  //           bottom: 0,
+  //           child: Container(
+  //             height: barHeight - 14,
+  //             width: MediaQuery.of(context).size.width,
+  //             decoration: BoxDecoration(
+  //               color: AppColors.white,
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                   color: Colors.grey.withOpacity(0.08),
+  //                   blurRadius: 8,
+  //                   offset: const Offset(0, 0),
+  //                 ),
+  //               ],
+  //             ),
+  //             child: const Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: [
+  //                 Icon(Icons.home, color: AppColors.green),
+  //                 Icon(Icons.bookmark_border, color: AppColors.border),
+  //                 SizedBox(width: 48),
+  //                 Icon(Icons.notifications_outlined, color: AppColors.border),
+  //                 Icon(Icons.person_outline, color: AppColors.border),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         Positioned(
+  //           top: 0,
+  //           left: 0,
+  //           right: 0,
+  //           child: Center(
+  //             child: SizedBox(
+  //               height: fabHeight,
+  //               width: fabHeight,
+  //               child: FloatingActionButton(
+  //                 heroTag: 'fab_home',
+  //                 onPressed: () {},
+  //                 backgroundColor: AppColors.green,
+  //                 shape: const CircleBorder(),
+  //                 child: const Icon(Icons.add, size: 24),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
