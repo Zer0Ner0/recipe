@@ -20,4 +20,9 @@ class AppColors {
   static const Color neutralGray4 = Color(0xFFD9D9D9);
   static const Color neutralGray1 = Color(0xFF484848);
   static const Color labelColor = Color(0xFF121212);
+
+  // Additional colors for notifications
+  static const Color secondaryOrange = Color(0xFFFF9C00);
+  static const Color neutralGray3 = Color(0xFFA9A9A9);
+  static const Color neutralWhite = Color(0xFFFFFFFF);
 }

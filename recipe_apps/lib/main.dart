@@ -4,6 +4,7 @@ import 'screens/signin_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/saved_recipes_screen.dart';
+import 'screens/notifications_screen.dart';
 
 void main() {
   runApp(const MyRecipeApp());
@@ -27,6 +28,7 @@ class MyRecipeApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/home': (context) => const HomeScreen(),
         '/saved': (context) => const SavedRecipesScreen(),
+        '/notifications': (context) => const NotificationsScreen(),
         '/signin': (context) => const SignIn(),
         '/signup': (context) => const SignUp(),
       },
