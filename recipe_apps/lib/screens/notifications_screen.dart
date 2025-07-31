@@ -73,7 +73,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         // Already on notifications screen
         break;
       case 3:
-        // Navigate to profile screen when implemented
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }
