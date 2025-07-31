@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
-import '../widgets/profile_recipe_card.dart';
-import '../widgets/profile_header_tabs.dart';
-import '../widgets/profile_avatar_stats.dart';
-import '../widgets/profile_bio_section.dart';
+import '../widgets/profile/profile_recipe_card.dart';
+import '../widgets/profile/profile_header_tabs.dart';
+import '../widgets/profile/profile_avatar_stats.dart';
+import '../widgets/profile/profile_bio_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

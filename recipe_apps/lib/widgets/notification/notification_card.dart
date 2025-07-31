@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
-import '../models/notification.dart';
+import '../../constants/colors.dart';
+import '../../models/notification.dart';
 import 'notification_icons.dart';
 
 

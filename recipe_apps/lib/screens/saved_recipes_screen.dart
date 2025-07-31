@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../models/recipe.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
-import '../widgets/saved_recipe_card.dart';
+import '../widgets/saved/saved_recipe_card.dart';
 
 class SavedRecipesScreen extends StatefulWidget {
   const SavedRecipesScreen({super.key});

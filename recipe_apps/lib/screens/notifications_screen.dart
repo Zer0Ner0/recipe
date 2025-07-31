@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../models/notification.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
-import '../widgets/notification_card.dart';
-import '../widgets/notification_tabs.dart';
+import '../widgets/notification/notification_card.dart';
+import '../widgets/notification/notification_tabs.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../constants/colors.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
-import '../widgets/recipe_card.dart';
-import '../widgets/new_recipe_card.dart';
+import '../widgets/home/recipe_card.dart';
+import '../widgets/home/new_recipe_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

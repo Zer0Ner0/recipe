@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
+import '../../constants/colors.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});

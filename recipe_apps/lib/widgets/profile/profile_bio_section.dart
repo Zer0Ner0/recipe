@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
+import '../../constants/colors.dart';
 
 class ProfileBioSection extends StatelessWidget {
   const ProfileBioSection({super.key});
