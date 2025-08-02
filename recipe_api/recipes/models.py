@@ -1,7 +1,7 @@
-
 from django.db import models
 from django.forms import ValidationError
 from django.contrib.auth.models import User
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
@@ -11,22 +11,56 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
+
     def average_rating(self):
         avg = self.reviews.aggregate(models.Avg('rating'))['rating__avg']
         return round(avg, 1) if avg is not None else None
 
 class Ingredient(models.Model):
-    recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='ingredients/', null=True, blank=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
+    name = models.CharField(max_length=255)
+    quantity = models.CharField(max_length=100)
+
+class RecipeStep(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
+    step_number = models.IntegerField()
+    instruction = models.TextField()
+
+
+class RecipeIngredient(models.Model):
+    UNIT_CHOICES = [
+        ('g', 'grams'),
+        ('kg', 'kilograms'),
+        ('ml', 'milliliters'),
+        ('l', 'liters'),
+        ('tsp', 'teaspoon'),
+        ('tbsp', 'tablespoon'),
+        ('cup', 'cup'),
+        ('pcs', 'pieces'),
+        ('pinch', 'pinch'),
+        ('slice', 'slice'),
+    ]
+
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    amount = models.FloatField()
+    unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
+
+    def __str__(self):
+        return f"{self.amount} {self.unit} of {self.ingredient.name}"
+
 
 class Step(models.Model):
-    recipe = models.ForeignKey(Recipe, related_name='steps', on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    description = models.TextField()
+    image = models.ImageField(upload_to='step_images/', null=True, blank=True)
     order = models.PositiveIntegerField()
-    instruction = models.TextField()
 
     class Meta:
         ordering = ['order']
+
 
 class Review(models.Model):
     recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE)
@@ -52,3 +86,4 @@ class SavedRecipe(models.Model):
     saved_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         unique_together = ('recipe', 'device_id')
+

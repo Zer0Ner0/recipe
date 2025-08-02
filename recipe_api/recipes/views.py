@@ -1,4 +1,4 @@
-
+from django.forms import inlineformset_factory
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,6 +8,8 @@ from .serializers import (
     NotificationSerializer, SavedRecipeSerializer,
     RecipeListSerializer, FullRecipeSerializer
 )
+from .forms import RecipeForm, IngredientFormSet, RecipeStepFormSet
+from django.shortcuts import render, get_object_or_404, redirect
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Recipe.objects.all().order_by('-created_at')
@@ -50,3 +52,42 @@ class NotificationViewSet(viewsets.ModelViewSet):
 class SavedRecipeViewSet(viewsets.ModelViewSet):
     queryset = SavedRecipe.objects.all()
     serializer_class = SavedRecipeSerializer
+
+def recipe_list(request):
+    recipes = Recipe.objects.all()
+    return render(request, 'recipe_list.html', {'recipes': recipes})
+
+def recipe_add(request):
+    if request.method == "POST":
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('recipe_list')
+    else:
+        form = RecipeForm()
+    return render(request, 'recipe_form.html', {'form': form})
+
+def recipe_edit(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    form = RecipeForm(request.POST or None, request.FILES or None, instance=recipe)
+    ingredient_formset = IngredientFormSet(request.POST or None, instance=recipe, prefix='ingredients')
+    step_formset = RecipeStepFormSet(request.POST or None, instance=recipe, prefix='steps')
+
+    if form.is_valid() and ingredient_formset.is_valid() and step_formset.is_valid():
+        form.save()
+        ingredient_formset.save()
+        step_formset.save()
+        return redirect('recipe_list')
+
+    return render(request, 'recipe_form.html', {
+        'form': form,
+        'ingredient_formset': ingredient_formset,
+        'step_formset': step_formset,
+    })
+
+def recipe_delete(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.method == "POST":
+        recipe.delete()
+        return redirect('recipe_list')
+    return render(request, 'recipe_confirm_delete.html', {'recipe': recipe})
