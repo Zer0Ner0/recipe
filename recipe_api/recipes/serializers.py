@@ -1,16 +1,15 @@
-
 from rest_framework import serializers
 from .models import Recipe, Ingredient, Step, Review, Notification, SavedRecipe
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'image']
+        fields = '__all__'
 
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        fields = ['id', 'order', 'instruction']
+        fields = ['id', 'order', 'description']
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,14 +28,14 @@ class RecipeListSerializer(serializers.ModelSerializer):
         return f"{avg:.1f}" if avg is not None else "0.0"
 
 class FullRecipeSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(many=True)
+    ingredients = IngredientSerializer(many=True, read_only=True)
     steps = StepSerializer(many=True)
     reviews = ReviewSerializer(many=True)
     rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'author', 'time', 'description', 'image', 'rating', 'ingredients', 'steps', 'reviews']
+        fields = '__all__'
 
     def get_rating(self, obj):
         avg = obj.average_rating()

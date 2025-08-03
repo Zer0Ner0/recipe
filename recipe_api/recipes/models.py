@@ -10,6 +10,7 @@ class Recipe(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='recipes/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -26,7 +27,7 @@ class Ingredient(models.Model):
 class RecipeStep(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
     step_number = models.IntegerField()
-    instruction = models.TextField()
+    description = models.TextField()
 
 
 class RecipeIngredient(models.Model):

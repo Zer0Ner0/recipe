@@ -1,5 +1,5 @@
 from django.forms import inlineformset_factory
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Recipe, Ingredient, Step, Review, Notification, SavedRecipe
@@ -10,14 +10,21 @@ from .serializers import (
 )
 from .forms import RecipeForm, IngredientFormSet, RecipeStepFormSet
 from django.shortcuts import render, get_object_or_404, redirect
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .filters import RecipeFilter  #  use your custom filter
 
-class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
+class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all().order_by('-created_at')
-    serializer_class = RecipeListSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['title', 'description']
+    filterset_class = RecipeFilter
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def retrieve(self, request, *args, **kwargs):
-        self.serializer_class = FullRecipeSerializer
-        return super().retrieve(request, *args, **kwargs)
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return FullRecipeSerializer
+        return RecipeListSerializer
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()

@@ -14,9 +14,10 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 router.register(r'notifications', NotificationViewSet, basename='notification')
 router.register(r'saved', SavedRecipeViewSet, basename='saved')
 
+
 urlpatterns = [
-	path('', views.recipe_list, name='recipe_list'),
-	path('add/', views.recipe_add, name='recipe_add'),
-	path('edit/<int:pk>/', views.recipe_edit, name='recipe_edit'),
-	path('delete/<int:pk>/', views.recipe_delete, name='recipe_delete'),
-]
+    path('', views.recipe_list, name='recipe_list'),
+    path('add/', views.recipe_add, name='recipe_add'),
+    path('edit/<int:pk>/', views.recipe_edit, name='recipe_edit'),
+    path('delete/<int:pk>/', views.recipe_delete, name='recipe_delete'),
+] + router.urls  #  This adds all API endpoints to the list

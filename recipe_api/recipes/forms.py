@@ -16,7 +16,7 @@ IngredientFormSet = inlineformset_factory(
 
 RecipeStepFormSet = inlineformset_factory(
     Recipe, RecipeStep,
-    fields=['step_number', 'instruction'],
+    fields=['step_number', 'description'],
     extra=1,
     can_delete=True
 )
