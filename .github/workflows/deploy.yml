@@ -3,7 +3,7 @@ name: Deploy to NAS
 on:
   push:
     branches:
-      - main  # change to your branch if needed
+      - main
 
 jobs:
   deploy:
@@ -18,12 +18,12 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
-        ssh-keyscan -p 8022 halnova.synology.me >> ~/.ssh/known_hosts
+        ssh-keyscan -p 8022 -H halnova.synology.me >> ~/.ssh/known_hosts
 
-    - name: Copy Code to NAS
+    - name: Copy Code to NAS (port 8022)
       run: |
-        rsync -avz --delete ./ deployer@halnova.synology.me:/volume1/web/recipe_api/
+        rsync -avz -e "ssh -p 8022" --delete ./ deployer@halnova.synology.me:/volume1/web/recipe_api/
 
-    - name: Restart Django on NAS
+    - name: Restart Django on NAS (port 8022)
       run: |
-        ssh deployer@halnova.synology.me 'sudo systemctl restart my_django_service'
+        ssh -p 8022 deployer@halnova.synology.me 'sudo systemctl restart recipe_api'
