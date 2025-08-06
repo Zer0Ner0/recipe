@@ -1,29 +1,30 @@
+# .github/workflows/deploy.yml
 name: Deploy to NAS
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust if using another branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
+    - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -p 8022 -H halnova.synology.me >> ~/.ssh/known_hosts
 
-    - name: Copy Code to NAS (port 8022)
+    - name: Copy project to NAS
       run: |
         rsync -avz -e "ssh -p 8022" --delete ./ deployer@halnova.synology.me:/volume1/web/recipe_api/
 
-    - name: Restart Django on NAS (port 8022)
+    - name: Restart Django on NAS
       run: |
         ssh -p 8022 deployer@halnova.synology.me 'sudo systemctl restart recipe_api'
