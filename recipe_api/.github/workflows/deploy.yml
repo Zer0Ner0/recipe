@@ -1,0 +1,29 @@
+name: Deploy to NAS
+
+on:
+  push:
+    branches:
+      - main  # change to your branch if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -p 8022 halnova.synology.me >> ~/.ssh/known_hosts
+
+    - name: Copy Code to NAS
+      run: |
+        rsync -avz --delete ./ deployer@halnova.synology.me:/volume1/web/recipe_api/
+
+    - name: Restart Django on NAS
+      run: |
+        ssh deployer@halnova.synology.me 'sudo systemctl restart my_django_service'
